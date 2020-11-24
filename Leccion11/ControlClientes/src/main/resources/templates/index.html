@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <title>Inicio</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <header th:replace="layout/plantilla :: header">
+            
+        </header>
+    <a  sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/agregar}" th:text="#{persona.crear}"></a>
+        <div th:if="${personas != null and !personas.empty}">
+            <table border="1">
+                <tr>
+                    <th th:text="#{persona.nombre}"></th>
+                    <th th:text="#{persona.apellido}"></th>
+                    <th th:text="#{persona.email}"></th>
+                    <th th:text="#{persona.telefono}"></th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')"  th:text="#{persona.editar}"></th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')"  th:text="#{persona.eliminar}"></th>
+                </tr>
+                <tr th:each="persona : ${personas}">
+                    <td th:text="${persona.nombre}">Mostrar Nombre</td>
+                    <td th:text="${persona.apellido}">Mostrar Apellido</td>
+                    <td th:text="${persona.email}">Mostrar Email</td>
+                    <td th:text="${persona.telefono}">Mostrar Teléfono</td>
+                    <td><a sec:authorize="hasRole('ROLE_ADMIN')"  th:href="@{/editar/} + ${persona.idPersona}" th:text="#{persona.editar}"></a></td>
+                    <td><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/eliminar/} + ${persona.idPersona}" th:text="#{persona.eliminar}"></a></td>
+                </tr>
+            </table>
+        </div>
+        <div th:text="#{persona.lista-vacia}" th:if="${personas == null or personas.empty}">
+           
+        </div>
+         <footer th:replace="layout/plantilla :: footer"></footer>
+    </body>
+</html>
