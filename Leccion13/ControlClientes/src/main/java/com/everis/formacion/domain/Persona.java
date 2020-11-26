@@ -3,6 +3,7 @@ package com.everis.formacion.domain;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -24,4 +25,7 @@ public class Persona implements Serializable{
     @NotEmpty
     private String email;
     private String telefono;
+       
+    @NotNull
+    private Double saldo; 
 }
