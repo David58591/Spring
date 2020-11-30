@@ -1,9 +1,10 @@
-package com.everis.formacion.servicio;
+package mx.com.gm.servicio;
 
 import java.util.List;
-import com.everis.formacion.domain.Persona;
+import mx.com.gm.domain.Persona;
 
 public interface PersonaService {
+    
     public List<Persona> listarPersonas();
     
     public void guardar(Persona persona);

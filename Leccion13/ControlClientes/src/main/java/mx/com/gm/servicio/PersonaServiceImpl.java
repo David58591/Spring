@@ -1,14 +1,14 @@
-package com.everis.formacion.servicio;
+package mx.com.gm.servicio;
 
-import com.everis.formacion.dao.PersonaDao;
-import com.everis.formacion.domain.Persona;
 import java.util.List;
+import mx.com.gm.dao.PersonaDao;
+import mx.com.gm.domain.Persona;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class PersonaServiceImpl implements PersonaService{
+public class PersonaServiceImpl implements PersonaService {
 
     @Autowired
     private PersonaDao personaDao;
@@ -16,7 +16,7 @@ public class PersonaServiceImpl implements PersonaService{
     @Override
     @Transactional(readOnly = true)
     public List<Persona> listarPersonas() {
-        return (List<Persona>)personaDao.findAll();
+        return (List<Persona>) personaDao.findAll();
     }
 
     @Override
@@ -28,13 +28,12 @@ public class PersonaServiceImpl implements PersonaService{
     @Override
     @Transactional
     public void eliminar(Persona persona) {
-     personaDao.delete(persona);
+        personaDao.delete(persona);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Persona encontrarPersona(Persona persona) {
-    return personaDao.findById(persona.getIdPersona()).orElse(null);
+        return personaDao.findById(persona.getIdPersona()).orElse(null);
     }
-    
 }

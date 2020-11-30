@@ -1,6 +1,6 @@
-package com.everis.formacion.dao;
+package mx.com.gm.dao;
 
-import com.everis.formacion.domain.Usuario;
+import mx.com.gm.domain.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioDao extends JpaRepository<Usuario, Long>{

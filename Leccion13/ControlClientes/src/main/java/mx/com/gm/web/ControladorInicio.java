@@ -1,9 +1,9 @@
-package com.everis.formacion.web;
+package mx.com.gm.web;
 
-import lombok.extern.slf4j.Slf4j;
-import com.everis.formacion.domain.Persona;
-import com.everis.formacion.servicio.PersonaService;
 import javax.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import mx.com.gm.domain.Persona;
+import mx.com.gm.servicio.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -22,17 +22,22 @@ public class ControladorInicio {
     
     @GetMapping("/")
     public String inicio(Model model, @AuthenticationPrincipal User user){
-        Iterable<Persona> personas = personaService.listarPersonas();
-        log.info("usuario que hizo login" + user);
+        var personas = personaService.listarPersonas();
         log.info("ejecutando el controlador Spring MVC");
+        log.info("usuario que hizo login:" + user);
         model.addAttribute("personas", personas);
+        var saldoTotal = 0D;
+        for(var p: personas){
+            saldoTotal += p.getSaldo();
+        }
+        model.addAttribute("saldoTotal", saldoTotal);
+        model.addAttribute("totalClientes", personas.size());
         return "index";
     }
     
     @GetMapping("/agregar")
     public String agregar(Persona persona){
         return "modificar";
-        
     }
     
     @PostMapping("/guardar")
@@ -40,7 +45,6 @@ public class ControladorInicio {
         if(errores.hasErrors()){
             return "modificar";
         }
-        
         personaService.guardar(persona);
         return "redirect:/";
     }
@@ -48,13 +52,13 @@ public class ControladorInicio {
     @GetMapping("/editar/{idPersona}")
     public String editar(Persona persona, Model model){
         persona = personaService.encontrarPersona(persona);
-        model.addAttribute("persona",persona);
+        model.addAttribute("persona", persona);
         return "modificar";
     }
-    @GetMapping("/eliminar/{idPersona}")
-    public String eliminar(Persona persona, Model model){
+    
+    @GetMapping("/eliminar")
+    public String eliminar(Persona persona){
         personaService.eliminar(persona);
-       return "redirect:/";
+        return "redirect:/";
     }
-            
 }

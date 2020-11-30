@@ -1,57 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
-        <title>Listado clientes</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Listado Clientes</title>
+        <meta charset="UTF-8"/>
     </head>
     <body>
-        <section th:fragment="listadoClientes" class="py-4 my-4 bg-ligth">
+        <section th:fragment="listadoClientes" id="clientes">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
-                        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/agregar}">[[#{persona.crear}]]</a>
-
-                        <div th:if="${personas != null and !personas.empty}">
-                            <table border="1" class="table table-bordered">
-                                <thead class="table-info">
-                                    
-                               
-                                <tr>
-                                    <th>[[#{persona.nombre}]]</th>
-                                    <th>[[#{persona.apellido}]]</th>
-                                    <th>[[#{persona.email}]]</th>
-                                    <th>[[#{persona.telefono}]]</th>
-                                    <th sec:authorize="hasRole('ROLE_ADMIN')">[[#{persona.editar}]]</th>
-                                    <th sec:authorize="hasRole('ROLE_ADMIN')">[[#{persona.eliminar}]]</th>
-                                </tr>
-                                 </thead>
-                                <tr th:each="persona : ${personas}">
-                                    <td th:text="${persona.nombre}">Mostrar Nombre</td>
-                                    <td th:text="${persona.apellido}">Mostrar Apellido</td>
-                                    <td th:text="${persona.email}">Mostrar Email</td>
-                                    <td th:text="${persona.telefono}">Mostrar Teléfono</td>
-                                    <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/editar/} + ${persona.idPersona}"/>[[#{persona.editar}]]</td>
-                                    <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminar(idPersona=${persona.idPersona})}"/>[[#{persona.eliminar}]]</td>
-                                    <header th:fragment="personaSaldo}"></header>
-                                 </tr>
-                            </table>
-                          
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>[[#{persona.titulo-lista}]]</h4>
+                            </div>
+                            <div th:if="${personas != null and !personas.empty}">
+                                <table class="table table-stryped">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>#</th>
+                                            <th th:text="#{persona.nombre}">Nombre</th>
+                                            <th th:text="#{persona.saldo}">Saldo</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="persona, contador : ${personas}">
+                                            <td>[[${contador.count}]]</td>
+                                            <td>[[${persona.nombre} + ' ' + ${persona.apellido}]]</td>
+                                            <td>[[${new java.text.DecimalFormat('$#,##0.00').format(persona.saldo)}]]</td>
+                                            <td>
+                                                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/editar/} + ${persona.idPersona}"
+                                                   class="btn btn-secondary">
+                                                    <i class="fas fa-angle-double-right"></i> [[#{accion.editar}]]
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/eliminar(idPersona=${persona.idPersona})}"
+                                                   class="btn btn-dark">
+                                                    <i class="fas fa-angle-double-right"></i> [[#{accion.eliminar}]]
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-center p-2" th:if="${personas == null or personas.empty}">
+                                <span th:text="#{persona.lista-vacia}">Lista vacía</span>
+                            </div>
                         </div>
-                        <div th:if="${personas == null or personas.empty}">
-                            [[#{persona.lista-vacia}]]
-                        </div>
-
-
                     </div>
-                    <!-- th:each="persona,iterator : ${personas}"-->
-                    <div 
-                        class="col-md-3 offset-md-6">
-                        <div th:style="'background-color:red; width:200px; padding:75px;'">
-                        <!--    <div th:insert="personaSaldo"></div> -->
+
+                    <div class="col-md-3">
+                        <div class="card text-center bg-danger text-white mb-3">
+                            <div class="card-body">
+                                <h3 th:text="#{persona.saldoTotal}">Saldo total</h3>
+                                <h4 class="display-4">
+                                    [[${new java.text.DecimalFormat('$#,##0.00').format(saldoTotal)}]]
+                                </h4>
+                            </div>
                         </div>
-                        <div th:style="'background-color:green; width:200px; padding:75px;'">
-                        <!--    <div th:insert="personaSaldo"></div> -->
+
+                        <div class="card text-center bg-success text-white mb-3">
+                            <div class="card-body">
+                                <h3 th:text="#{persona.totalClientes}">Total Clientes</h3>
+                                <h4 class="display-4">
+                                    <i class="fas fa-users"></i> [[${totalClientes}]]
+                                </h4>
+                            </div>
                         </div>
                     </div>
                 </div>
