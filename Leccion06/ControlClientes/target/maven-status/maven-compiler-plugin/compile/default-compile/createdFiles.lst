@@ -1,0 +1,6 @@
+com\everis\formacion\dao\PersonaDao.class
+com\everis\formacion\servicio\PersonaService.class
+com\everis\formacion\servicio\PersonaServiceImpl.class
+com\everis\formacion\web\ControladorInicio.class
+com\everis\formacion\domain\Persona.class
+com\everis\formacion\HolaSpringApplication.class
